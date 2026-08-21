@@ -1,6 +1,6 @@
 SELECT
 cliente.nome_cli AS cliente,
-pedido.id_ped AS numero_da_comanda,
+pedido.id_ped AS comanda,
 funcionario.nome_func AS funcionario,
 produto.nome_prod AS produto,
 conteudo_pedido.quantidade_it AS quantidade,
