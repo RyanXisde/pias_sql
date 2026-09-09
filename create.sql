@@ -21,9 +21,7 @@ CREATE TABLE IF NOT EXISTS fornecedor(
   produto_forn INTEGER NOT NULL,
   preco_forn REAL NOT NULL,
   contato_forn TEXT NOT NULL,
-  email_forn TEXT NOT NULL,
-  
-  FOREIGN KEY (produto_forn) REFERENCES produto(id_prod)
+  email_forn TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS produto(
