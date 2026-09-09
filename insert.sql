@@ -16,8 +16,15 @@ VALUES
 ('Miguel Souza', '2002-07-19', '385-716-924.79'),
 ('Clara Ribeiro', '1997-06-28', '917-463-285.80');
 
-INSERT INTO funcionario
-(nome_func, area_func, telefone_func, cpf_func, data_contrato_func, salario_func)
+
+INSERT INTO funcionario (
+    nome_func,
+    area_func,
+    telefone_func,
+    cpf_func,
+    data_contrato_func,
+    salario_func
+)
 VALUES
 ('Ivan Ferreira', 'Administracao', '+55 45 9974-2703', '943-827-092.00', '2020-12-12', 3500.00),
 ('Stefani Almeida', 'Administracao', '+55 45 5956-2193', '847-934-192.12', '2020-04-10', 3500.00),
@@ -35,27 +42,35 @@ VALUES
 ('Thiago Nunes', 'Suporte Tecnico', '+55 45 9957-4821', '924-617-385.44', '2021-04-19', 3300.00),
 ('Leticia Alves', 'Suporte Tecnico', '+55 45 9972-6153', '436-829-157.55', '2024-01-22', 3100.00);
 
-INSERT INTO fornecedor
-(nome_forn, produto_forn, preco_forn, contato_forn, email_forn)
-VALUES
-('TechDistribuidora', 1, 65.90, '+55 45 99123-4567', 'contato@techdistribuidora.com'),
-('Mega Eletronicos', 2, 145.90, '+55 45 99234-5678', 'vendas@megaeletronicos.com'),
-('Digital Store', 3, 99.90, '+55 45 99345-6789', 'contato@digitalstore.com'),
-('InfoCenter', 4, 125.90, '+55 45 99456-7890', 'vendas@infocenter.com'),
-('PC Master', 5, 649.90, '+55 45 99567-8901', 'contato@pcmaster.com'),
-('Smart Tech', 6, 39.90, '+55 45 99678-9012', 'vendas@smarttech.com'),
-('Eletronica Brasil', 7, 89.90, '+55 45 99789-0123', 'contato@eletronicabrasil.com'),
-('Conecta Informatica', 8, 24.90, '+55 45 99890-1234', 'vendas@conectainformatica.com'),
-('Mundo Digital', 9, 32.90, '+55 45 99901-2345', 'contato@mundodigital.com'),
-('Tech House', 10, 229.90, '+55 45 99112-3456', 'vendas@techhouse.com'),
-('Mega PC', 11, 179.90, '+55 45 99223-4567', 'contato@megapc.com'),
-('Brasil Informatica', 12, 45.90, '+55 45 99334-5678', 'vendas@brasilinformatica.com'),
-('Nexus Tecnologia', 13, 54.90, '+55 45 99445-6789', 'contato@nexustecnologia.com'),
-('Digital Center', 14, 59.90, '+55 45 99556-7890', 'vendas@digitalcenter.com'),
-('Inova Eletronicos', 15, 79.90, '+55 45 99667-8901', 'contato@inovaeletronicos.com');
 
-INSERT INTO produto
-(nome_prod, preco_prod, forn_prod)
+INSERT INTO fornecedor (
+    nome_forn,
+    contato_forn,
+    email_forn
+)
+VALUES
+('TechDistribuidora', '+55 45 99123-4567', 'contato@techdistribuidora.com'),
+('Mega Eletronicos', '+55 45 99234-5678', 'vendas@megaeletronicos.com'),
+('Digital Store', '+55 45 99345-6789', 'contato@digitalstore.com'),
+('InfoCenter', '+55 45 99456-7890', 'vendas@infocenter.com'),
+('PC Master', '+55 45 99567-8901', 'contato@pcmaster.com'),
+('Smart Tech', '+55 45 99678-9012', 'vendas@smarttech.com'),
+('Eletronica Brasil', '+55 45 99789-0123', 'contato@eletronicabrasil.com'),
+('Conecta Informatica', '+55 45 99890-1234', 'vendas@conectainformatica.com'),
+('Mundo Digital', '+55 45 99901-2345', 'contato@mundodigital.com'),
+('Tech House', '+55 45 99112-3456', 'vendas@techhouse.com'),
+('Mega PC', '+55 45 99223-4567', 'contato@megapc.com'),
+('Brasil Informatica', '+55 45 99334-5678', 'vendas@brasilinformatica.com'),
+('Nexus Tecnologia', '+55 45 99445-6789', 'contato@nexustecnologia.com'),
+('Digital Center', '+55 45 99556-7890', 'vendas@digitalcenter.com'),
+('Inova Eletronicos', '+55 45 99667-8901', 'contato@inovaeletronicos.com');
+
+
+INSERT INTO produto (
+    nome_prod,
+    preco_prod,
+    forn_prod
+)
 VALUES
 ('Mouse Gamer RGB', 119.90, 1),
 ('Teclado Mecanico RGB', 249.90, 2),
@@ -73,22 +88,32 @@ VALUES
 ('Carregador USB-C', 99.90, 14),
 ('Suporte para Notebook', 129.90, 15);
 
-INSERT INTO pedido
-(cliente_ped, funcionario_ped, produto_ped, data_ped, valor_total)
-VALUES
-(1, 3, '1', '2026-08-01', 369.80),
-(2, 5, '5', '2026-08-02', 899.90),
-(3, 8, '3', '2026-08-03', 429.80),
-(4, 2, '7', '2026-08-04', 149.90),
-(5, 6, '2', '2026-08-05', 599.70),
-(6, 10, '10', '2026-08-06', 329.90),
-(7, 1, '2', '2026-08-07', 249.90),
-(8, 4, '3', '2026-08-08', 479.80),
-(9, 12, '1', '2026-08-09', 119.90),
-(10, 7, '5', '2026-08-10', 949.80);
 
-INSERT INTO conteudo_pedido
-(pedido_it, produto_it, quantidade_it, preco_it)
+INSERT INTO pedido (
+    cliente_ped,
+    funcionario_ped,
+    data_ped,
+    valor_total
+)
+VALUES
+(1, 3, '2026-08-01', 369.80),
+(2, 5, '2026-08-02', 949.80),
+(3, 8, '2026-08-03', 319.70),
+(4, 2, '2026-08-04', 209.80),
+(5, 6, '2026-08-05', 539.80),
+(6, 10, '2026-08-06', 419.80),
+(7, 1, '2026-08-07', 329.80),
+(8, 4, '2026-08-08', 379.80),
+(9, 12, '2026-08-09', 219.80),
+(10, 7, '2026-08-10', 949.80);
+
+
+INSERT INTO conteudo_pedido (
+    pedido_it,
+    produto_it,
+    quantidade_it,
+    preco_it
+)
 VALUES
 (1, 1, 1, 119.90),
 (1, 2, 1, 249.90),
