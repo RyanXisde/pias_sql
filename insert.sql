@@ -17,14 +17,7 @@ VALUES
 ('Clara Ribeiro', '1997-06-28', '917-463-285.80');
 
 
-INSERT INTO funcionario (
-    nome_func,
-    area_func,
-    telefone_func,
-    cpf_func,
-    data_contrato_func,
-    salario_func
-)
+INSERT INTO funcionario (nome_func, area_func, telefone_func, cpf_func, data_contrato_func, salario_func)
 VALUES
 ('Ivan Ferreira', 'Administracao', '+55 45 9974-2703', '943-827-092.00', '2020-12-12', 3500.00),
 ('Stefani Almeida', 'Administracao', '+55 45 5956-2193', '847-934-192.12', '2020-04-10', 3500.00),
@@ -43,11 +36,7 @@ VALUES
 ('Leticia Alves', 'Suporte Tecnico', '+55 45 9972-6153', '436-829-157.55', '2024-01-22', 3100.00);
 
 
-INSERT INTO fornecedor (
-    nome_forn,
-    contato_forn,
-    email_forn
-)
+INSERT INTO fornecedor (nome_forn, contato_forn, email_forn)
 VALUES
 ('TechDistribuidora', '+55 45 99123-4567', 'contato@techdistribuidora.com'),
 ('Mega Eletronicos', '+55 45 99234-5678', 'vendas@megaeletronicos.com'),
@@ -66,11 +55,7 @@ VALUES
 ('Inova Eletronicos', '+55 45 99667-8901', 'contato@inovaeletronicos.com');
 
 
-INSERT INTO produto (
-    nome_prod,
-    preco_prod,
-    forn_prod
-)
+INSERT INTO produto (nome_prod, preco_prod, forn_prod)
 VALUES
 ('Mouse Gamer RGB', 119.90, 1),
 ('Teclado Mecanico RGB', 249.90, 2),
@@ -89,12 +74,7 @@ VALUES
 ('Suporte para Notebook', 129.90, 15);
 
 
-INSERT INTO pedido (
-    cliente_ped,
-    funcionario_ped,
-    data_ped,
-    valor_total
-)
+INSERT INTO pedido (cliente_ped, funcionario_ped, data_ped, valor_total)
 VALUES
 (1, 3, '2026-08-01', 369.80),
 (2, 5, '2026-08-02', 949.80),
@@ -108,11 +88,7 @@ VALUES
 (10, 7, '2026-08-10', 949.80);
 
 
-INSERT INTO conteudo_pedido (
-    pedido_it,
-    produto_it,
-    quantidade_it,
-    preco_it
+INSERT INTO conteudo_pedido (pedido_it, produto_it, quantidade_it, preco_it
 )
 VALUES
 (1, 1, 1, 119.90),
