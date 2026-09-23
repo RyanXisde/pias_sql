@@ -1,3 +1,5 @@
+PRAGMA foreign_keys = ON;
+
 INSERT INTO cliente (nome_cli, nascimento_cli, cpf_cli)
 VALUES
 ('Ana Beatriz Martins', '2001-02-17', '284-617-395.46'),
