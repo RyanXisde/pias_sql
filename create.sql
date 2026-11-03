@@ -1,5 +1,20 @@
+-- Arquivo: database.sql
+
 PRAGMA foreign_keys = ON;
 
+-- Tabela de produtos, adaptada do JSON fornecido
+CREATE TABLE IF NOT EXISTS produto (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    preco REAL NOT NULL,
+    precoOriginal REAL,  -- Campo opcional, pode ser NULL
+    imagem TEXT NOT NULL,
+    categoria TEXT NOT NULL,
+    estoque INTEGER NOT NULL,
+    destaque BOOLEAN NOT NULL -- TRUE ou FALSE
+);
+
+-- Adicionando outras tabelas que você mencionou (se precisar delas no futuro)
 CREATE TABLE IF NOT EXISTS cliente (
     id_cli INTEGER PRIMARY KEY AUTOINCREMENT,
     nome_cli TEXT NOT NULL,
@@ -22,16 +37,6 @@ CREATE TABLE IF NOT EXISTS fornecedor (
     nome_forn TEXT NOT NULL,
     contato_forn TEXT NOT NULL,
     email_forn TEXT NOT NULL UNIQUE
-);
-
-CREATE TABLE IF NOT EXISTS produto (
-    id_prod INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome_prod TEXT NOT NULL,
-    preco_prod REAL NOT NULL,
-    forn_prod INTEGER NOT NULL,
-
-    FOREIGN KEY (forn_prod)
-        REFERENCES fornecedor(id_forn)
 );
 
 CREATE TABLE IF NOT EXISTS pedido (
