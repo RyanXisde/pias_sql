@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collector's Hub | Loja Geek</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <header>
+        <button class="hamburger-btn" id="menuToggle" aria-label="Abrir Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="logo">
+            <a href="#" id="logoLink">
+                <img src="imagens/Logo.png" alt="Collector's Hub Logo">
+            </a>
+        </div>
+
+        <div class="header-actions">
+            <button class="btn" id="btnIrCarrinho">
+                🛒 <span>Carrinho</span>
+                <span id="cartCountBadge" class="badge">0</span>
+            </button>
+            <button class="letra_botao_cadas" id="btnIrCadastro" title="Cadastro / Login">👤</button>
+            <button class="letra_botao_cadas" id="btnIrConfig" title="Configurações">⚙️</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside id="sidebar">
+            <div class="aside-header">
+                <h2>Categorias</h2>
+                <button class="close-btn" id="menuClose">&times;</button>
+            </div>
+            <ul>
+                <li><a class="nav-link" href="#" data-categoria="todos">🏠 Todos os Produtos</a></li>
+                <li><a class="nav-link" href="#" data-categoria="promocoes">🔥 Promoções & Descontos</a></li>
+                <li><a class="nav-link" href="#" data-categoria="canecas">☕ Canecas</a></li>
+                <li><a class="nav-link" href="#" data-categoria="ac">🦸 Action Figures</a></li>
+                <li><a class="nav-link" href="#" data-categoria="quadros">🖼️ Quadros</a></li>
+                <li><a class="nav-link" href="#" data-categoria="mangas">📚 Mangás</a></li>
+                <li><a class="nav-link" href="#" data-categoria="ln">📖 Light Novels</a></li>
+                <li><a class="nav-link" href="#" data-categoria="hq">💥 Quadrinhos</a></li>
+                <li><a class="nav-link" href="#" data-categoria="games">🎮 Games</a></li>
+                <li><a class="nav-link" href="#" data-categoria="colecionaveis">🎲 Colecionáveis</a></li>
+                <li><a class="nav-link" href="#" data-categoria="roupas">👘 Roupas</a></li>
+                <li><a href="#" class="nav-link" data-categoria="favoritos">❤️ Meus Favoritos</a></li>
+                 <li><a href="#" class="nav-link-sobre">ℹ️ Sobre Nós</a></li>
+            </ul>
+        </aside>
+
+        <!-- AQUI O JSRENDEREIZA O CONTEÚDO DA TELA ATUAL (HOME, CARRINHO OU CADASTRO) -->
+        <main id="app"></main>
+    </div>
+
+    <!-- RODAPÉ ATUALIZADO -->
+    <footer class="site-footer">
+      <div class="footer-container">
+
+        <!-- Coluna 1: Marca & Manifesto -->
+        <div class="footer-col footer-brand">
+          <h3 class="footer-logo">Mundo do <span>Colecionador</span></h3>
+          <p>Sua loja definitiva de colecionáveis, action figures e universo geek. Produtos selecionados para elevação máxima da sua coleção!</p>
+          <div class="footer-badges">
+            <span class="badge-tag">⚡ Envio Rápido</span>
+            <span class="badge-tag">🛡️ 100% Original</span>
+          </div>
+        </div>
+
+        <!-- Coluna 2: Navegação -->
+        <div class="footer-col">
+          <h4>Navegação</h4>
+          <ul>
+            <li><a href="#" class="nav-link" data-categoria="todos"><span>›</span> Início</a></li>
+            <li><a href="#" class="nav-link" data-categoria="favoritos"><span>›</span> Meus Favoritos</a></li>
+            <li><a href="#"><span>›</span> Lançamentos</a></li>
+            <li><a href="#" class="nav-link" data-categoria="promocoes"><span>›</span> Promoções</a></li>
+          </ul>
+        </div>
+
+        <!-- Coluna 3: Suporte -->
+        <div class="footer-col">
+          <h4>Suporte</h4>
+          <ul>
+            <li><a href="#"><span>›</span> Central de Ajuda</a></li>
+            <li><a href="#"><span>›</span> Entregas e Frete</a></li>
+            <li><a href="#"><span>›</span> Trocas e Devoluções</a></li>
+            <li><a href="#"><span>›</span> Termos & Privacidade</a></li>
+          </ul>
+        </div>
+
+
+      </div>
+
+      <!-- RODAPÉ DA APLICAÇÃO -->
+<footer style="background: #141526; color: #a0a3c4; padding: 40px 20px 20px; border-top: 1px solid #2a2d4a; margin-top: 50px; font-family: sans-serif;">
+    <div style="max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px;">
+
+        <!-- COLUNA 1: SOBRE A LOJA -->
+        <div style="flex: 1; min-width: 220px;">
+            <h3 style="color: #fff; margin-top: 0; margin-bottom: 12px; font-size: 1.2rem;">
+                Sobre Nós <span style="color: #6c5ce7;">🛠️</span>
+            </h3>
+            <p style="font-size: 0.9rem; line-height: 1.6; color: #8c8fae; margin: 0;">
+                O Collector's Hub nasceu de uma paixão inegociável pelo universo geek, gamer, otaku e pela cultura pop. Não somos apenas um e-commerce; somos o ponto de encontro definitivo construído por fãs e para fãs que entendem o peso emocional de cada item na prateleira. Se você busca aquele Action Figure com acabamento impecável, a edição física do seu mangá favorito, Light Novels, HQs, games, canecas temáticas ou peças de vestuário e cosplay, este é o seu santuário.
+
+Sabemos que para um verdadeiro colecionador a experiência vai muito além da compra. Por isso, nosso compromisso se baseia na autenticidade e no cuidado extremo: todos os produtos são rigorosamente selecionados e embalados com proteção reforçada, garantindo que a caixa e o colecionável cheguem impecáveis até você.
+
+Oferecemos uma plataforma intuitiva equipada com rastreamento em tempo real, programa de Membros VIP, benefícios de frete grátis e um espaço aberto para avaliações transparentes da comunidade. Do primeiro item da sua estante até a coleção de nível mestre, o Collector's Hub existe para elevar o seu hobby e transformar seu espaço no universo dos seus sonhos.
+            </p>
+        </div>
+
+        <!-- COLUNA 3: CRIADORES DO SITE (4 INTEGRANTES) -->
+        <div style="flex: 1; min-width: 220px;">
+            <h4 style="color: #fff; margin-top: 0; margin-bottom: 15px; font-size: 1rem; border-bottom: 2px solid #6c5ce7; display: inline-block; padding-bottom: 4px;">
+                Desenvolvido por
+            </h4>
+            <ul style="list-style: none; padding: 0; margin: 0; line-height: 2; font-size: 0.9rem;">
+                <li style="display: flex; align-items: center; gap: 8px; color: #d1d5db;">
+                    <span style="color: #6c5ce7;">🛠️</span> Calebe
+                </li>
+                <li style="display: flex; align-items: center; gap: 8px; color: #d1d5db;">
+                    <span style="color: #6c5ce7;">🎨</span> Juliana
+                </li>
+                <li style="display: flex; align-items: center; gap: 8px; color: #d1d5db;">
+                    <span style="color: #6c5ce7;">💻</span> Paulo
+                </li>
+                <li style="display: flex; align-items: center; gap: 8px; color: #d1d5db;">
+                    <span style="color: #6c5ce7;">🚀</span> Ryan
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- SEÇÃO DE PATROCÍNIO / PARCERIA -->
+<div class="patrocinio-banner" style="background: #141526; border-top: 1px solid #2a2d4a; border-bottom: 1px solid #2a2d4a; padding: 25px 20px; font-family: sans-serif;">
+    <div style="max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <!-- ÍCONE / LOGO DO ATELIÊ -->
+            <div style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #a29bfe, #6c5ce7); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff; box-shadow: 0 4px 12px rgba(108, 92, 231, 0.35); flex-shrink: 0;">
+                ✨
+            </div>
+
+            <!-- INFORMAÇÕES DO PATROCINADOR -->
+            <div>
+                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #6c5ce7; font-weight: bold; display: block; margin-bottom: 2px;">
+                    Patrocinador Oficial
+                </span>
+                <h4 style="margin: 0; color: #fff; font-size: 1.2rem; font-weight: 700;">
+                    Celestie Ateliê
+                </h4>
+                <p style="margin: 4px 0 0 0; color: #a0a3c4; font-size: 0.88rem; line-height: 1.4;">
+                    "A distância entre os planetas é enorme, mas o poder da arte e do estilo consegue conectar mentes e criar constelações de sofisticação com um único fio de seda cósmica."
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    <!-- LINHA INFERIOR / DIREITOS AUTORAIS -->
+    <div class="footer-bottom">
+        <p>
+            &copy; 2026 <strong>Collector's Hub</strong>. Criado e mantido pela equipe de desenvolvedores.
+        </p>
+    </div>
+</footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
