@@ -64,5 +64,5 @@ CREATE TABLE IF NOT EXISTS conteudo_pedido (
         REFERENCES pedido(id_ped),
 
     FOREIGN KEY (produto_it)
-        REFERENCES produto(id_prod)
+        REFERENCES produto(id)
 );

@@ -2,7 +2,7 @@ SELECT
     c.nome_cli AS cliente,
     p.id_ped AS pedido,
     f.nome_func AS funcionario,
-    pr.nome_prod AS produto,
+    pr.nome AS produto,
     cp.quantidade_it AS quantidade,
     cp.preco_it AS preco_unitario,
     cp.quantidade_it * cp.preco_it AS subtotal,
@@ -19,6 +19,6 @@ INNER JOIN conteudo_pedido AS cp
     ON p.id_ped = cp.pedido_it
 
 INNER JOIN produto AS pr
-    ON cp.produto_it = pr.id_prod
+    ON cp.produto_it = pr.id
 
 ORDER BY p.id_ped;

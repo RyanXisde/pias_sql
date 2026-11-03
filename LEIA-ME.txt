@@ -1,0 +1,9 @@
+COLLECTOR'S HUB - VERSÃO CORRIGIDA
+
+Abra index.html no navegador. Os 100 produtos são carregados de dados.js sem precisar de servidor SQL.
+Menu, categorias, pesquisa, favoritos e carrinho funcionam no navegador. Os dados do carrinho e favoritos ficam no localStorage.
+
+IMPORTANTE: A pasta de imagens não estava nos arquivos enviados. Coloque suas imagens na pasta imagens/ e/ou imagem/ respeitando os caminhos do cadastro. Sem esses arquivos, as fotos não aparecem.
+
+Os arquivos create.sql, insert.sql e select.sql estão corrigidos/organizados para SQLite. Não há ligação real entre SQLite e navegador; para usar banco de dados ao vivo é necessário um backend/API.
+Cadastro e checkout são apenas demonstrações, não salvam usuários nem processam pagamentos.

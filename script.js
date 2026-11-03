@@ -1,225 +1,36 @@
-// ==========================================
-// 1. ESTADO GLOBAL E VARIÁVEIS
-// ==========================================
-let produtos = []; // Será preenchido com dados simulados do SQL
-
-let estado = {
-    telaAtual: 'home', // 'home', 'carrinho', 'cadastro', 'configuracoes', 'sobre_nos', 'avaliacao_produto'
-    categoriaFiltro: 'todos',
-    termoBusca: '',
-    produtoModalId: null, // ID do produto para exibir no modal
-    descontoPercentual: 0, // Desconto aplicado ao carrinho, se houver
-    freteValor: 0,        // Valor do frete simulado
-    usuarioLogado: null,  // Objeto do usuário logado { id, nome, email }
-    configuracoes: {
-        modoEscuro: false,
-        notificacoes: true
-    }
-};
-
-// Dados de exemplo para usuário logado e configurações (serão carregados do localStorage)
-const USUARIO_EXEMPLO = { id: 1, nome: 'Visitante', email: 'visitante@email.com' };
-
-// Mapeamento de categorias para ícones e nomes para o menu e banners
-const logosCategorias = {
-    todos: 'imagens/icone-home.svg',
-    promocoes: 'imagens/icone-promo.svg',
-    canecas: 'imagens/icone-caneca.svg',
-    ac: 'imagens/icone-actionfigure.svg',
-    quadros: 'imagens/icone-quadro.svg',
-    mangas: 'imagens/icone-manga.svg',
-    ln: 'imagens/icone-ln.svg',
-    hq: 'imagens/icone-hq.svg',
-    games: 'imagens/icone-game.svg',
-    colecionaveis: 'imagens/icone-colecionavel.svg',
-    roupas: 'imagens/icone-roupa.svg',
-    favoritos: 'imagens/icone-favorito.svg'
-};
-
-const nomesCategorias = {
-    todos: 'Todos os Produtos',
-    promocoes: 'Promoções & Descontos',
-    canecas: 'Canecas',
-    ac: 'Action Figures',
-    quadros: 'Quadros',
-    mangas: 'Mangás',
-    ln: 'Light Novels',
-    hq: 'Quadrinhos',
-    games: 'Games',
-    colecionaveis: 'Colecionáveis',
-    roupas: 'Roupas',
-    favoritos: 'Meus Favoritos'
-};
-
-
-// ==========================================
-// DADOS SIMULADOS DO BANCO DE DADOS SQL
-// (Substitui a leitura do 'produtos.json')
-// ==========================================
-const produtosSimuladosSQL = [
-    // Os dados que foram fornecidos anteriormente estão aqui.
-    // Certifique-se de que a lista completa esteja presente.
-    // Exemplo:
-    { id: 1, nome: 'Caneca Luppyvara e Capizoro', preco: 39.90, precoOriginal: 49.90, imagem: 'imagens/caneca.cappiece.webp', categoria: 'canecas', estoque: 5, destaque: true, descricao: 'Caneca temática de um anime famoso, perfeita para começar o dia com energia.' },
-    { id: 2, nome: 'Caneca Gengar Pokemon', preco: 54.60, precoOriginal: null, imagem: 'imagens/pokemon.png', categoria: 'canecas', estoque: 5, destaque: false, descricao: 'Uma caneca que brilha no escuro, com o design do adorável Gengar.' },
-    { id: 3, nome: 'Caneca Vegeta', preco: 59.95, precoOriginal: null, imagem: 'imagens/caneca_vegeta.jpeg', categoria: 'canecas', estoque: 5, destaque: false, descricao: 'Para os fãs de Dragon Ball Z, a caneca do Príncipe dos Saiyajins.' },
-    { id: 4, nome: 'Caneca Baby Yoda', preco: 16.99, precoOriginal: 22.23, imagem: 'imagens/babycoffee.jpeg', categoria: 'canecas', estoque: 5, destaque: true, descricao: 'Leve o carisma do Grogu para sua cozinha com esta caneca encantadora.' },
-    { id: 5, nome: 'Action Figure Roger', preco: 199.90, precoOriginal: null, imagem: 'imagens/roger.png', categoria: 'ac', estoque: 5, destaque: false, descricao: 'Figura de ação detalhada do icônico pirata Roger.' },
-    { id: 6, nome: 'Action Figure Sukuna Era Heian', preco: 98.95, precoOriginal: 103.19, imagem: 'imagens/sukuna era hein.webp', categoria: 'ac', estoque: 5, destaque: true, descricao: 'Representação impressionante de Sukuna em sua forma da Era Heian.' },
-    { id: 7, nome: 'Action Figure Nefetpitou', preco: 216.70, precoOriginal: null, imagem: 'imagens/nefetpitou.jfif.jpeg', categoria: 'ac', estoque: 5, destaque: false, descricao: 'Figura de ação articulada da poderosa Nenefetpitou.' },
-    { id: 8, nome: 'Action Figure Irmão do Jorel', preco: 99.99, precoOriginal: null, imagem: 'imagens/Jorel.jpg', categoria: 'ac', estoque: 5, destaque: false, descricao: 'Traga a diversão surreal do Irmão do Jorel para sua estante.' },
-    { id: 9, nome: 'Cosplay Tanjiro Demon Slayer', preco: 415.84, precoOriginal: null, imagem: 'imagens/imagem.png', categoria: 'roupas', estoque: 5, destaque: false, descricao: 'Completo e fiel ao personagem Tanjiro Kamado de Demon Slayer.' },
-    { id: 10, nome: 'Cosplay Frieren', preco: 224.05, precoOriginal: null, imagem: 'imagens/frieren cosplay.jpeg', categoria: 'roupas', estoque: 5, destaque: false, descricao: 'Recrie a magia de Frieren com este cosplay de alta qualidade.' },
-    { id: 11, nome: 'Cosplay Spy X Family Anya', preco: 201.50, precoOriginal: 314.90, imagem: 'imagens/anya-cosplay.webp', categoria: 'roupas', estoque: 5, destaque: true, descricao: 'Vista-se como a adorável Anya Forger e espalhe fofura!' },
-    { id: 12, nome: 'Manto da Akatsuki', preco: 199.99, precoOriginal: null, imagem: 'imagens/akatsuki.webp', categoria: 'roupas', estoque: 5, destaque: false, descricao: 'O manto icônico da Akatsuki para você se sentir parte da organização.' },
-    { id: 13, nome: 'Quadro Luffy', preco: 40.99, precoOriginal: null, imagem: 'imagens/quadro.luffy.jpeg', categoria: 'quadros', estoque: 5, destaque: false, descricao: 'Decore seu espaço com a imagem vibrante do futuro Rei dos Piratas.' },
-    { id: 14, nome: 'Quadro Escanor', preco: 99.18, precoOriginal: null, imagem: 'imagens/Escanor.jpeg', categoria: 'quadros', estoque: 5, destaque: false, descricao: 'A imponência de Escanor, o Pecado do Orgulho, em um quadro.' },
-    { id: 15, nome: 'Demon Slayer Mangá Vol. 1', preco: 34.90, precoOriginal: null, imagem: 'imagens/demon-slayer.jpeg', categoria: 'mangas', estoque: 5, destaque: false, descricao: 'Inicie sua coleção de Demon Slayer com o primeiro volume.' },
-    { id: 16, nome: 'Jujutsu Kaisen Mangá Vol. 1', preco: 22.55, precoOriginal: 27.90, imagem: 'imagens/Jujutsu Kaisen vol 1.jpeg', categoria: 'mangas', estoque: 5, destaque: true, descricao: 'Acompanhe Yuji Itadori em sua jornada no mundo dos feiticeiros.' },
-    { id: 17, nome: 'Re:Zero Vol. 1', preco: 42.90, precoOriginal: null, imagem: 'imagens/re_zero.jpeg', categoria: 'ln', estoque: 5, destaque: false, descricao: 'Acompanhe Subaru Natsuki em seu ciclo de renascimentos em um mundo de fantasia.' },
-    { id: 18, nome: 'Aventuras Marvel #1', preco: 9.90, precoOriginal: null, imagem: 'imagens/miranha.webp', categoria: 'hq', estoque: 5, destaque: false, descricao: 'Edição especial com as primeiras aventuras do Amigão da Vizinhança.' },
-    { id: 19, nome: 'Super Smash Bros Ultimate Edição Especial', preco: 367.03, precoOriginal: null, imagem: 'imagens/ssb.jpeg', categoria: 'games', estoque: 5, destaque: false, descricao: 'A edição definitiva de Smash Bros com todos os lutadores e fases.' },
-    { id: 20, nome: 'Quadro Jojo', preco: 30.00, precoOriginal: 49.90, imagem: 'imagens/Jojo.jpeg', categoria: 'quadros', estoque: 5, destaque: true, descricao: 'Um quadro estiloso para os fãs de JoJo\'s Bizarre Adventure.' },
-    { id: 21, nome: 'Funko Pop James Minions', preco: 115.10, precoOriginal: null, imagem: 'imagens/minions.webp', categoria: 'colecionaveis', estoque: 5, destaque: false, descricao: 'O divertido Funko Pop do Minion James, direto do cinema.' },
-    { id: 22, nome: 'Quadro Berserk', preco: 49.90, precoOriginal: null, imagem: 'imagens/berserk.jpeg', categoria: 'quadros', estoque: 5, destaque: false, descricao: 'Estampe a força de Guts de Berserk em sua parede.' },
-    { id: 23, nome: 'Hunter X Hunter Vol. 1', preco: 71.68, precoOriginal: null, imagem: 'imagens/hunter x hunter.jpeg', categoria: 'mangas', estoque: 5, destaque: false, descricao: 'A jornada de Gon e Killua começa nesta emocionante aventura.' },
-    { id: 24, nome: 'Blue Lock Vol. 1', preco: 32.90, precoOriginal: 43.90, imagem: 'imagens/bluelock.jpg', categoria: 'mangas', estoque: 5, destaque: true, descricao: 'O desafio para se tornar o melhor atacante do mundo.' },
-    { id: 25, nome: 'Diarios de uma Apotecária Vol. 1', preco: 73.69, precoOriginal: null, imagem: 'imagens/DA.jpg', categoria: 'ln', estoque: 5, destaque: false, descricao: 'Acompanhe Maomao desvendando mistérios na corte imperial.' },
-    { id: 26, nome: 'Eighty Six Vol. 1', preco: 41.26, precoOriginal: null, imagem: 'imagens/Eighty Six.jpg', categoria: 'ln', estoque: 5, destaque: false, descricao: 'Uma história intensa de guerra e sobrevivência em um mundo distópico.' },
-    { id: 27, nome: 'Lycoris Recoil: Ordinary Days Vol. 1', preco: 25.95, precoOriginal: null, imagem: 'imagens/lycorisnovel.webp', categoria: 'ln', estoque: 5, destaque: false, descricao: 'Explora o cotidiano e os laços entre as agentes Lycoris.' },
-    { id: 28, nome: 'Superman/Batman: DC Compact Comics Edition', preco: 59.99, precoOriginal: 67.93, imagem: 'imagens/Superman e Batman.jpg', categoria: 'hq', estoque: 5, destaque: true, descricao: 'Um confronto épico entre dois dos maiores heróis da DC.' },
-    { id: 29, nome: 'CoreKeeper', preco: 189.97, precoOriginal: null, imagem: 'imagens/corekeeper.jfif', categoria: 'games', estoque: 5, destaque: false, descricao: 'Explore um mundo subterrâneo misterioso neste RPG de sobrevivência.' },
-    { id: 30, nome: 'The Boys Vol. 1: O Nome do Jogo', preco: 80.00, precoOriginal: null, imagem: 'imagens/theboys.jpg', categoria: 'hq', estoque: 5, destaque: false, descricao: 'A origem da equipe de vigilantes que luta contra super-heróis corruptos.' },
-    { id: 31, nome: 'Sonic Frontiers Edição Padrão', preco: 93.80, precoOriginal: 100.36, imagem: 'imagens/Sonic.jpeg', categoria: 'games', estoque: 5, destaque: true, descricao: 'Acelere em um mundo aberto com o ouriço mais rápido do mundo.' },
-    { id: 32, nome: 'Mortal Kombat 1', preco: 217.79, precoOriginal: null, imagem: 'imagens/mk1.jpg', categoria: 'games', estoque: 5, destaque: false, descricao: 'O reinício da saga Mortal Kombat com um universo novo.' },
-    { id: 33, nome: 'Street Fighter 6 Edição Padrão', preco: 249.00, precoOriginal: 349.00, imagem: 'imagens/streetfighter6.webp', categoria: 'games', estoque: 5, destaque: true, descricao: 'A nova geração de luta com Ryu, Chun-Li e novos combatentes.' },
-    { id: 34, nome: 'Chapéu do Luffy (Estilo Straw Hat)', preco: 59.90, precoOriginal: null, imagem: 'imagens/chapeu do luffy.jpeg', categoria: 'colecionaveis', estoque: 5, destaque: false, descricao: 'O icônico chapéu de palha do Monkey D. Luffy.' },
-    { id: 35, nome: 'Máscara Sally Face', preco: 80.75, precoOriginal: null, imagem: 'imagens/sallyface.jpeg', categoria: 'colecionaveis', estoque: 5, destaque: false, descricao: 'Replica da misteriosa máscara do jogo Sally Face.' },
-    { id: 36, nome: 'Kit 3 Chaveiros de God Of War', preco: 150.00, precoOriginal: 200.00, imagem: 'imagens/chaveirogodofwar.jpg', categoria: 'colecionaveis', estoque: 5, destaque: true, descricao: 'Chaveiros com os símbolos icônicos de God of War.' },
-    { id: 37, nome: 'Batman X Fortnite Vol. 1', preco: 9.90, precoOriginal: null, imagem: 'imagens/dc-e-fort1.jpeg', categoria: 'hq', estoque: 5, destaque: false, descricao: 'O Cavaleiro das Trevas encontra o Battle Royale.' },
-    { id: 38, nome: 'Batman X Fortnite Vol. 2', preco: 9.90, precoOriginal: null, imagem: 'imagens/dc-e-fort2.jpeg', categoria: 'hq', estoque: 5, destaque: false, descricao: 'Continua a saga de Batman em Fortnite.' },
-    { id: 39, nome: 'Batman X Fortnite Vol. 3', preco: 9.90, precoOriginal: null, imagem: 'imagens/dc-e-fort3.jpeg', categoria: 'hq', estoque: 5, destaque: false, descricao: 'Mais reviravoltas na aliança entre Batman e Fortnite.' },
-    { id: 40, nome: 'Batman X Fortnite Vol. 4', preco: 9.90, precoOriginal: null, imagem: 'imagens/dc-e-fort4.jpeg', categoria: 'hq', estoque: 5, destaque: false, descricao: 'O confronto épico continua em Fortnite.' },
-    { id: 41, nome: 'Batman X Fortnite Vol. 5', preco: 9.90, precoOriginal: null, imagem: 'imagens/dc-e-fort5.jpeg', categoria: 'hq', estoque: 5, destaque: false, descricao: 'A história de Batman em Fortnite chega ao clímax.' },
-    { id: 42, nome: 'Batman X Fortnite Vol. 6', preco: 9.90, precoOriginal: null, imagem: 'imagens/dc-e-fort6.avif', categoria: 'hq', estoque: 5, destaque: false, descricao: 'O final da minissérie Batman e Fortnite.' },
-    { id: 43, nome: 'Marvel Guerra do Ponto Zero Vol. 1', preco: 14.90, precoOriginal: null, imagem: 'imagens/mrl-e-fort1.jpeg', categoria: 'hq', estoque: 5, destaque: false, descricao: 'Heróis Marvel invadem Fortnite.' },
-    { id: 44, nome: 'Marvel Guerra do Ponto Zero Vol. 2', preco: 14.90, precoOriginal: null, imagem: 'imagens/mrl-e-fort2.jpeg', categoria: 'hq', estoque: 5, destaque: false, descricao: 'A luta dos heróis Marvel em Fortnite continua.' },
-    { id: 45, nome: 'Marvel Guerra do Ponto Zero Vol. 3', preco: 14.90, precoOriginal: null, imagem: 'imagens/mrl-e-fort3.jpeg', categoria: 'hq', estoque: 5, destaque: false, descricao: 'Mais ação Marvel em Fortnite.' },
-    { id: 46, nome: 'Marvel Guerra do Ponto Zero Vol. 4', preco: 14.90, precoOriginal: null, imagem: 'imagens/mrl-e-fort4.jpeg', categoria: 'hq', estoque: 5, destaque: false, descricao: 'O ponto zero dos heróis Marvel em Fortnite.' },
-    { id: 47, nome: 'Marvel Guerra do Ponto Zero Vol. 5', preco: 14.90, precoOriginal: null, imagem: 'imagens/mrl-e-fort5.jpeg', categoria: 'hq', estoque: 5, destaque: false, descricao: 'Conclusão da saga Marvel em Fortnite.' },
-    { id: 48, nome: 'Quadro de Procurado Chopper', preco: 18.00, precoOriginal: 30.00, imagem: 'imagens/chopper.jpeg', categoria: 'quadros', estoque: 5, destaque: true, descricao: 'O cartaz de procurado do adorável médico da tripulação do Chapéu de Palha.' },
-    { id: 49, nome: 'Caneca de Death Note', preco: 35.99, precoOriginal: null, imagem: 'imagens/deathnote.webp', categoria: 'canecas', estoque: 5, destaque: false, descricao: 'Para os fãs de mistério e suspense, a caneca de Death Note.' },
-    { id: 50, nome: 'Action Figure do Monkey D. Luffy (Gear 5)', preco: 327.50, precoOriginal: 368.11, imagem: 'imagens/acLuffy.webp', categoria: 'ac', estoque: 5, destaque: true, descricao: 'Figura espetacular de Luffy em sua forma Gear 5, cheia de detalhes.' },
-    { id: 51, nome: 'Manga de Attack On Titan Vol. 1', preco: 49.00, precoOriginal: null, imagem: 'imagens/attk.jpg', categoria: 'mangas', estoque: 5, destaque: false, descricao: 'O início da batalha da humanidade contra os Titãs.' },
-    { id: 52, nome: 'Caneca de Maomao', preco: 50.00, precoOriginal: null, imagem: 'imagens/c_maomao.png.jpg', categoria: 'canecas', estoque: 5, destaque: false, descricao: 'Caneca inspirada na inteligente e curiosa Maomao.' },
-    { id: 53, nome: 'Action Figure Toji Fushiguro', preco: 350.00, precoOriginal: null, imagem: 'imagens/ac_toji.png.jpg', categoria: 'ac', estoque: 5, destaque: false, descricao: 'O poderoso Feiticeiro Toji Fushiguro em uma figura impressionante.' },
-    { id: 54, nome: 'Superman vs Homem Aranha HQ', preco: 60.00, precoOriginal: null, imagem: 'imagens/hq_ha_vs_sm.png.jpg', categoria: 'hq', estoque: 5, destaque: false, descricao: 'Um crossover épico entre os heróis da DC e Marvel.' },
-    { id: 55, nome: 'Quadro Spy Family Anya', preco: 25.00, precoOriginal: null, imagem: 'imagens/spy_family_q.png.jfif', categoria: 'quadros', estoque: 5, destaque: false, descricao: 'Decore seu quarto com a adorável Anya Forger.' },
-    { id: 56, nome: 'Pokebola 3D colecionável', preco: 65.00, precoOriginal: null, imagem: 'imagens/poke_fita.png', categoria: 'colecionaveis', estoque: 5, destaque: true, descricao: 'Uma réplica fiel e funcional da Pokebola para colecionadores.' },
-    { id: 57, nome: 'Invencível #1: Negócios de Família', preco: 19.90, precoOriginal: null, imagem: 'imagens/invencible.jpeg', categoria: 'hq', estoque: 5, destaque: false, descricao: 'A premiada série Invencível começa aqui.' },
-    { id: 58, nome: 'Beastars, Vol. 1', preco: 77.98, precoOriginal: null, imagem: 'imagens/beastars.jfif', categoria: 'mangas', estoque: 5, destaque: true, descricao: 'Um mundo onde animais antropomórficos convivem e conflitam.' },
-    { id: 59, nome: 'Amor Invisível Sob o Céu Noturno Vol. 1', preco: 42.90, precoOriginal: null, imagem: 'imagens/AISCN.jfif', categoria: 'ln', estoque: 5, destaque: false, descricao: 'Um romance celestial sobre duas almas conectadas.' },
-    { id: 60, nome: 'Date a Live Vol. 1', preco: 46.00, precoOriginal: null, imagem: 'imagens/DAL.jfif', categoria: 'ln', estoque: 5, destaque: false, descricao: 'Shido deve conquistar espíritos para salvar o mundo.' },
-    { id: 61, nome: 'Stardew Valley Edição Colecionador', preco: 279.90, precoOriginal: null, imagem: 'imagens/Stardew-valley.jfif', categoria: 'games', estoque: 5, destaque: false, descricao: 'A charmosa simulação de fazenda em uma edição especial.' },
-    { id: 62, nome: 'Pingente de Sereia do Stardew Valley', preco: 15.00, precoOriginal: null, imagem: 'imagens/pingentesereia.jfif', categoria: 'colecionaveis', estoque: 5, destaque: false, descricao: 'Um pingente delicado inspirado no jogo Stardew Valley.' },
-    { id: 63, nome: 'Fursuit Traje Completo Personalizado', preco: 11973.99, precoOriginal: null, imagem: 'imagens/fursuit.jpg', categoria: 'roupas', estoque: 1, destaque: false, descricao: 'Traje de fursuit de alta qualidade e personalizado para você.' },
-    { id: 64, nome: 'Miku Hatsune Cosplay', preco: 732.90, precoOriginal: null, imagem: 'imagens/miku.jfif', categoria: 'roupas', estoque: 5, destaque: false, descricao: 'Reviva o visual icônico de Hatsune Miku.' },
-    { id: 65, nome: 'Chain Smoker Cat Mangá Vol. 1', preco: 50.15, precoOriginal: null, imagem: 'imagens/gatafumante.jfif', categoria: 'mangas', estoque: 5, destaque: false, descricao: 'Uma história intrigante sobre um gato peculiar.' },
-    { id: 66, nome: 'Hellboy Omnibus Vol. 1: Seed of Destruction', preco: 189.90, precoOriginal: null, imagem: 'imagens/hellboy.jfif', categoria: 'hq', estoque: 5, destaque: false, descricao: 'O início das aventuras do demônio amigável da B.P.R.D.' },
-    { id: 67, nome: 'Marvel Guerra Civil Vol. 1', preco: 142.50, precoOriginal: null, imagem: 'imagens/guerracivil.jfif', categoria: 'hq', estoque: 5, destaque: false, descricao: 'O evento que dividiu o universo Marvel.' },
-    { id: 68, nome: 'Deadpool Vol. 1', preco: 14.90, precoOriginal: null, imagem: 'imagens/deadpool.webp', categoria: 'hq', estoque: 5, destaque: false, descricao: 'O Mercenário Tagarela em suas primeiras aventuras cômicas.' },
-    { id: 69, nome: 'Avatar: The High Ground Vol. 1', preco: 87.90, precoOriginal: null, imagem: 'imagens/avatar.jfif', categoria: 'hq', estoque: 5, destaque: false, descricao: 'Novas histórias do mundo de Avatar: The Last Airbender.' },
-    { id: 70, nome: 'Godzilla in Hell Vol. 1', preco: 59.75, precoOriginal: null, imagem: 'imagens/GIH.jpg', categoria: 'hq', estoque: 5, destaque: false, descricao: 'O Rei dos Monstros em uma jornada infernal.' },
-    { id: 71, nome: 'One Piece Vol. 1', preco: 37.00, precoOriginal: null, imagem: 'imagens/onepiece.jfif', categoria: 'mangas', estoque: 5, destaque: false, descricao: 'A grande aventura de Monkey D. Luffy em busca do One Piece.' },
-    { id: 72, nome: 'Sense Life Vol. 1', preco: 41.50, precoOriginal: null, imagem: 'imagens/senselife.jfif', categoria: 'mangas', estoque: 5, destaque: false, descricao: 'Uma história de romance e autodescoberta.' },
-    { id: 73, nome: 'Caneca Jotaro vs Dio', preco: 45.00, precoOriginal: null, imagem: 'imagem/jxd.jfif', categoria: 'canecas', estoque: 5, destaque: false, descricao: 'O embate clássico de Jojo\'s Bizarre Adventure em uma caneca.' },
-    { id: 74, nome: 'Caneca Game Boy Color', preco: 44.00, precoOriginal: null, imagem: 'imagem/GBC.jpg', categoria: 'canecas', estoque: 5, destaque: false, descricao: 'Reviva a nostalgia do Game Boy Color com esta caneca.' },
-    { id: 75, nome: 'Action Figure Spawn Clássico', preco: 750.00, precoOriginal: null, imagem: 'imagem/Spw.webp', categoria: 'ac', estoque: 5, destaque: false, descricao: 'Figura de alta qualidade do icônico anti-herói Spawn.' },
-    { id: 76, nome: 'Action Figure Demogorgon (Stranger Things)', preco: 43.00, precoOriginal: null, imagem: 'imagem/Demo.jpg', categoria: 'ac', estoque: 5, destaque: false, descricao: 'O terrível Demogorgon pronto para assustar sua coleção.' },
-    { id: 77, nome: 'Zero no Tsukaima Vol. 1', preco: 30.00, precoOriginal: null, imagem: 'imagem/ZT.jfif', categoria: 'mangas', estoque: 5, destaque: false, descricao: 'A história de Saito, um plebeu convocado como familiar de uma maga.' },
-    { id: 78, nome: 'Aprenda a Desenhar Mangá: Guia Completo', preco: 40.00, precoOriginal: null, imagem: 'imagem/aadm.jfif', categoria: 'mangas', estoque: 5, destaque: false, descricao: 'Um guia passo a passo para desenhar no estilo mangá.' },
-    { id: 79, nome: 'Toon Vol. 1', preco: 40.00, precoOriginal: null, imagem: 'imagem/Toon.jfif', categoria: 'mangas', estoque: 5, destaque: false, descricao: 'Uma aventura divertida e colorida em quadrinhos.' },
-    { id: 80, nome: 'Nagatoro Vol. 1', preco: 45.00, precoOriginal: null, imagem: 'imagem/nmcn.jfif', categoria: 'mangas', estoque: 5, destaque: false, descricao: 'As provocações de Hayase Nagatoro começam aqui.' },
-    { id: 81, nome: 'Medaka Box Vol. 1', preco: 40.00, precoOriginal: null, imagem: 'imagem/mb.jfif', categoria: 'mangas', estoque: 5, destaque: false, descricao: 'A extraordinária vida de Medaka Kurokami.' },
-    { id: 82, nome: 'Madoka Magica Vol. 1', preco: 60.00, precoOriginal: null, imagem: 'imagem/mm.jfif', categoria: 'mangas', estoque: 5, destaque: false, descricao: 'Uma garota mágica com um destino sombrio.' },
-    { id: 83, nome: 'Caneca de Porcelana Personalizada Cubo Mágico', preco: 35.99, precoOriginal: null, imagem: 'imagem/canecubo.jfif', categoria: 'canecas', estoque: 5, destaque: false, descricao: 'Design inspirado no clássico cubo mágico.' },
-    { id: 84, nome: 'Caneca I Love My Nerd', preco: 44.90, precoOriginal: null, imagem: 'imagem/canecamynerd.jpg', categoria: 'canecas', estoque: 5, destaque: false, descricao: 'Para celebrar o amor nerd!' },
-    { id: 85, nome: 'Figura de Ação Eva 01 (Evangelion)', preco: 350.00, precoOriginal: null, imagem: 'imagem/ev01.jfif', categoria: 'ac', estoque: 5, destaque: false, descricao: 'O icônico Evangelion Unidade-01 em uma figura impressionante.' },
-    { id: 86, nome: 'Figura de Ação Sanji (One Piece)', preco: 85.00, precoOriginal: null, imagem: 'imagem/vs.webp', categoria: 'ac', estoque: 5, destaque: false, descricao: 'O cozinheiro da tripulação do Chapéu de Palha em ação.' },
-    { id: 87, nome: 'Figura de Ação Zoro Sem Camisa', preco: 45.00, precoOriginal: null, imagem: 'imagem/rz.jpg', categoria: 'ac', estoque: 5, destaque: false, descricao: 'O espadachim Roronoa Zoro em pose de combate.' },
-    { id: 88, nome: 'Figura de Ação Nezuko Kamado (Demon Slayer)', preco: 890.00, precoOriginal: null, imagem: 'imagem/nk.webp', categoria: 'ac', estoque: 5, destaque: false, descricao: 'Figura de colecionador de alta detalhes da Nezuko demoníaca.' },
-    { id: 89, nome: 'Figura de Ação Gogeta Super Saiyajin 4', preco: 400.00, precoOriginal: null, imagem: 'imagem/gssj4.jfif', categoria: 'ac', estoque: 5, destaque: false, descricao: 'A fusão definitiva em sua forma Super Saiyajin 4.' },
-    { id: 90, nome: 'Action Figure Satoru Gojo (Jujutsu Kaisen)', preco: 285.60, precoOriginal: null, imagem: 'imagem/gojo.webp', categoria: 'ac', estoque: 5, destaque: false, descricao: 'O poderoso e carismático Satoru Gojo.' },
-    { id: 91, nome: 'Action Figure Kratos e Atreus - God Of War', preco: 299.90, precoOriginal: null, imagem: 'imagem/bomdegurra.webp', categoria: 'ac', estoque: 5, destaque: false, descricao: 'O Deus da Guerra e seu filho em uma figura dinâmica.' },
-    { id: 92, nome: 'Quadro Pantera Cor de Rosa', preco: 180.90, precoOriginal: null, imagem: 'imagem/pcdr.webp', categoria: 'quadros', estoque: 5, destaque: false, descricao: 'Um toque de charme e sofisticação retrô.' },
-    { id: 93, nome: 'Quadro Homer Simpson', preco: 60.00, precoOriginal: null, imagem: 'imagem/qrs.jpg', categoria: 'quadros', estoque: 5, destaque: false, descricao: 'D\'oh! Leve o humor de Homer para sua casa.' },
-    { id: 94, nome: 'Kit Quadros Star Wars', preco: 299.90, precoOriginal: null, imagem: 'imagem/sw.jfif', categoria: 'quadros', estoque: 5, destaque: false, descricao: 'Decore seu ambiente com a saga espacial mais amada.' },
-    { id: 95, nome: 'Kit Quadros Irmãos Mario', preco: 299.90, precoOriginal: null, imagem: 'imagem/im.jfif', categoria: 'quadros', estoque: 5, destaque: false, descricao: 'Aventura e nostalgia com Mario, Luigi e companhia.' },
-    { id: 96, nome: 'Classroom of the Elite - Vol. 1', preco: 39.90, precoOriginal: null, imagem: 'imagem/cote.jpg', categoria: 'ln', estoque: 5, destaque: false, descricao: 'Inteligência e estratégia na escola de elite.' },
-    { id: 97, nome: 'No Game, No Life - Vol. 1', preco: 746.70, precoOriginal: null, imagem: 'imagem/ngnf.jpg', categoria: 'ln', estoque: 5, destaque: false, descricao: 'Um mundo onde tudo é decidido por jogos.' },
-    { id: 98, nome: 'Mushoku Tensei: Jobless Reincarnation - Vol. 1', preco: 74.71, precoOriginal: null, imagem: 'imagem/MTJR.jpg', categoria: 'ln', estoque: 5, destaque: false, descricao: 'A reencarnação de um homem em um mundo de magia.' },
-    { id: 99, nome: 'Berserk Of Gluttony - Vol. 1', preco: 71.05, precoOriginal: null, imagem: 'imagem/bog.webp', categoria: 'ln', estoque: 5, destaque: false, descricao: 'O poder insaciável de um protagonista com um passado sombrio.' },
-    { id: 100, nome: 'God of War (2018) - Edição Padrão', preco: 120.00, precoOriginal: null, imagem: 'imagem/gow4.webp', categoria: 'games', estoque: 5, destaque: false, descricao: 'A jornada de Kratos e Atreus pelas terras nórdicas.' },
-    // Adicionar mais produtos se necessário...
-];
-
-// Dados simulados para avaliações (chave é o ID do produto)
-const avaliacoesSimuladasSQL = {
-    1: [{ id: 1, produtoId: 1, autor: 'Ana Silva', data: '2024-10-26', nota: 5, comentario: 'Adorei a caneca! Qualidade ótima e a arte é linda.' }],
-    6: [{ id: 2, produtoId: 6, autor: 'Carlos Souza', data: '2024-10-25', nota: 4, comentario: 'Figura muito detalhada, mas a caixa veio um pouco amassada.' }],
-    11: [{ id: 3, produtoId: 11, autor: 'Mariana Lima', data: '2024-10-24', nota: 5, comentario: 'O cosplay é perfeito! Ficou igualzinho à Anya.' }],
-    16: [{ id: 4, produtoId: 16, autor: 'Pedro Alves', data: '2024-10-23', nota: 5, comentario: 'Mangá chegou rápido e em perfeito estado. Essencial para a coleção!' }],
-    31: [{ id: 5, produtoId: 31, autor: 'Julia Mendes', data: '2024-10-22', nota: 4, comentario: 'Jogo divertido, mas a performance no meu console poderia ser melhor.' }],
-    50: [{ id: 6, produtoId: 50, autor: 'Lucas Pereira', data: '2024-10-21', nota: 5, comentario: 'Figura do Luffy Gear 5 é espetacular! Recomendo demais!' }],
-    56: [{ id: 7, produtoId: 56, autor: 'Fernanda Costa', data: '2024-10-20', nota: 5, comentario: 'A pokebola é incrível, veio muito bem embalada e funciona perfeitamente.' }],
-    36: [{ id: 8, produtoId: 36, autor: 'Bruno Rocha', data: '2024-10-19', nota: 5, comentario: 'Kit de chaveiros muito bonito, ótima qualidade.' }],
-    28: [{ id: 9, produtoId: 28, autor: 'Renata Souza', data: '2024-10-18', nota: 4, comentario: 'História interessante, mas esperava mais ação.' }],
-    48: [{ id: 10, produtoId: 48, autor: 'Thiago Santos', data: '2024-10-17', nota: 5, comentario: 'Quadro muito legal e com ótimo preço.' }]
-};
-
-
-// ==========================================
-// FUNÇÕES DE UTILIDADE E RENDERIZAÇÃO
-// ==========================================
-
-// Formata preço para Real Brasileiro (R$)
-function formatarMoeda(valor) {
-    if (typeof valor !== 'number') return 'R$ --,--';
-    return `R$ ${valor.toFixed(2).replace('.', ',')}`;
-}
-
-// Gera o HTML para estrelas de avaliação
-function renderEstrelasHTML(mediaAvaliacao) {
-    const numEstrelas = Math.round(mediaAvaliacao);
-    let estrelasHTML = '';
-    for (let i = 1; i <= 5; i++) {
-        estrelasHTML += `<span class="star">${i <= numEstrelas ? '★' : '☆'}</span>`;
-    }
-    return estrelasHTML;
-}
-
-// Gera o HTML para exibir o preço (com ou sem desconto)
-function renderPrecoHTML(produto) {
-    if (!produto || typeof produto.preco !== 'number') return '<p>Preço indisponível</p>';
-
-    if (produto.precoOriginal && produto.preco < produto.precoOriginal) {
-        const desconto = ((produto.precoOriginal - produto.preco) / produto.precoOriginal) * 100;
-        return `
-            <div class="container-preco">
-                <span class="preco-atual">${formatarMoeda(produto.preco)}</span>
-                <span class="preco-antigo">${formatarMoeda(produto.precoOriginal)}</span>
-                <span class="badge-desconto">${desconto.toFixed(0)}% OFF</span>
-            </div>
-        `;
-    } else {
-        return `<p class="preco-atual">${formatarMoeda(produto.preco)}</p>`;
-    }
-}
-
-// Gera o HTML para o botão de favorito
-function renderBotaoFavoritoHTML(idProduto) {
-    const favoritos = getFavoritos();
-    const isFavorited = favoritos.includes(idProduto);
-    return `
-        <button class="btn-favorito ${isFavorited ? 'ativo' : ''}" data-id="${idProduto}" title="${isFavorited ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos'}">
-            ${isFavorited ? '❤️' : '♡'}
+'use strict';
+const app = document.getElementById('app');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('menuOverlay');
+const categorias = {todos:'Todos os Produtos',promocoes:'Promoções & Descontos',canecas:'Canecas',ac:'Action Figures',quadros:'Quadros',mangas:'Mangás',ln:'Light Novels',hq:'Quadrinhos',games:'Games',colecionaveis:'Colecionáveis',roupas:'Roupas',favoritos:'Meus Favoritos'};
+let categoria = 'todos', tela = 'home', busca = '';
+const ler = (chave, padrao) => { try {const valor=JSON.parse(localStorage.getItem(chave));return valor ?? padrao;} catch {return padrao;} };
+let carrinho = ler('collector_carrinho', {});
+let favoritos = ler('collector_favoritos', []);
+const salvar = () => {localStorage.setItem('collector_carrinho',JSON.stringify(carrinho));localStorage.setItem('collector_favoritos',JSON.stringify(favoritos));};
+const dinheiro = valor => Number(valor).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const escapar = valor => String(valor).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const achar = id => produtos.find(p=>p.id===Number(id));
+const imagem = p => encodeURI(p.imagem).replace(/#/g,'%23');
+function fecharMenu(){sidebar.classList.remove('active');overlay.classList.remove('active');}
+function abrirMenu(){sidebar.classList.add('active');overlay.classList.add('active');}
+function atualizarContador(){document.getElementById('cartCountBadge').textContent=Object.values(carrinho).reduce((a,b)=>a+Number(b),0);}
+function card(p){return `<article class="card"><img class="imagem_produto" src="${escapar(imagem(p))}" alt="${escapar(p.nome)}" loading="lazy" onerror="this.style.visibility='hidden'"><h3>${escapar(p.nome)}</h3><div style="padding:0 15px 12px"><strong style="color:#ff8c32">${dinheiro(p.preco)}</strong>${p.precoOriginal && p.precoOriginal>p.preco?` <del style="color:#aaa">${dinheiro(p.precoOriginal)}</del>`:''}<p style="font-size:.85rem;margin:8px 0;color:#a0a3c4">Estoque: ${p.estoque}</p></div><div style="display:flex;align-items:center;gap:4px;padding:0 12px 12px"><button data-acao="comprar" data-id="${p.id}" ${p.estoque<1?'disabled':''}>Adicionar 🛒</button><button data-acao="favoritar" data-id="${p.id}" aria-label="Favoritar" style="width:48px;flex-shrink:0">${favoritos.includes(p.id)?'❤️':'♡'}</button></div></article>`;}
+function renderHome(){let itens=produtos.filter(p=>categoria==='todos'||(categoria==='promocoes'?(p.precoOriginal>p.preco):categoria==='favoritos'?favoritos.includes(p.id):p.categoria===categoria));if(busca)itens=itens.filter(p=>p.nome.toLocaleLowerCase('pt-BR').includes(busca.toLocaleLowerCase('pt-BR')));app.innerHTML=`<section><h1 style="margin-bottom:16px">${categorias[categoria]||'Produtos'}</h1><input id="campoBusca" type="search" placeholder="Buscar produtos..." value="${escapar(busca)}" style="width:100%;max-width:450px;padding:12px;border-radius:10px;margin-bottom:25px;background:#1c1a32;color:white;border:1px solid #6b3fc9"><p style="margin-bottom:20px;color:#a0a3c4">${itens.length} produto(s) encontrado(s)</p><div class="cards">${itens.length?itens.map(card).join(''):'<p>Nenhum produto encontrado.</p>'}</div></section>`;}
+function renderCarrinho(){let ids=Object.keys(carrinho).filter(id=>achar(id));let subtotal=ids.reduce((v,id)=>v+achar(id).preco*carrinho[id],0);app.innerHTML=`<section class="carrinho-page"><div class="carrinho-header"><h1>🛒 Meu Carrinho</h1></div>${ids.length?`<div class="carrinho-grid"><div class="carrinho-itens-card">${ids.map(id=>{const p=achar(id);return `<div class="carrinho-item"><img src="${escapar(imagem(p))}" alt="${escapar(p.nome)}"><div class="item-detalhes"><h4>${escapar(p.nome)}</h4><p>${dinheiro(p.preco)}</p></div><div class="item-qtd-control"><button class="btn-qtd" data-acao="menos" data-id="${id}">−</button>${carrinho[id]}<button class="btn-qtd" data-acao="mais" data-id="${id}">+</button></div><button class="btn-remover-item" data-acao="remover" data-id="${id}">✕</button></div>`}).join('')}</div><div class="resumo-card"><h2>Resumo do pedido</h2><div class="resumo-linha linha-total"><span>Total</span><span>${dinheiro(subtotal)}</span></div><button class="btn-finalizar" data-acao="finalizar">Finalizar pedido</button><p style="margin-top:15px;color:#a0a3c4">Demonstração: pagamento não integrado.</p></div></div>`:'<div class="carrinho-vazio-box"><h2>Seu carrinho está vazio</h2><button class="btn" data-acao="inicio" style="margin:20px auto">Ver produtos</button></div>'}</section>`;}
+function renderCadastro(){app.innerHTML=`<div class="cadastro-wrapper"><div class="cadastro-box"><h1>Cadastro / Login</h1><h2>Área de demonstração</h2><form id="formLogin"><div class="campo"><label>Nome</label><input name="nome" required autocomplete="name"></div><div class="campo"><label>E-mail</label><input name="email" type="email" required autocomplete="email"></div><button type="submit">Continuar</button></form><p id="mensagemLogin" style="margin-top:15px"></p></div></div>`;}
+function renderConfig(){app.innerHTML='<h1>⚙️ Configurações</h1><p style="margin-top:20px">Loja em modo de demonstração local.</p>'}
+function renderSobre(){app.innerHTML='<h1>ℹ️ Sobre Nós</h1><p style="margin-top:20px">Collector\'s Hub — Mundo do Colecionador. Uma loja para fãs de cultura geek.</p>'}
+function render(){atualizarContador();if(tela==='home')renderHome();else if(tela==='carrinho')renderCarrinho();else if(tela==='cadastro')renderCadastro();else if(tela==='configuracoes')renderConfig();else renderSobre();}
+function navegar(destino){tela=destino;fecharMenu();render();window.scrollTo(0,0);}
+document.getElementById('menuToggle').addEventListener('click',abrirMenu);
+document.getElementById('menuClose').addEventListener('click',fecharMenu);
+overlay.addEventListener('click',fecharMenu);
+document.getElementById('btnIrCarrinho').addEventListener('click',()=>navegar('carrinho'));
+document.getElementById('btnIrCadastro').addEventListener('click',()=>navegar('cadastro'));
+document.getElementById('btnIrConfig').addEventListener('click',()=>navegar('configuracoes'));
+document.getElementById('logoLink').addEventListener('click',e=>{e.preventDefault();categoria='todos';busca='';navegar('home')});
+document.addEventListener('click',e=>{const link=e.target.closest('.nav-link');if(link){e.preventDefault();categoria=link.dataset.categoria||'todos';busca='';navegar('home');return;}if(e.target.closest('.nav-link-sobre')){e.preventDefault();navegar('sobre');return;}const btn=e.target.closest('[data-acao]');if(!btn)return;const acao=btn.dataset.acao,id=Number(btn.dataset.id),p=achar(id);if(acao==='inicio'){categoria='todos';navegar('home');return;}if(acao==='finalizar'){alert('Esta é uma demonstração. Para finalizar compras reais, é necessário integrar um backend de pedidos e pagamentos.');return;}if(!p)return;if(acao==='comprar'||acao==='mais'){if((carrinho[id]||0)>=p.estoque){alert('Quantidade máxima em estoque.');return;}carrinho[id]=(carrinho[id]||0)+1;}else if(acao==='menos'){carrinho[id]=Math.max(0,(carrinho[id]||0)-1);if(!carrinho[id])delete carrinho[id];}else if(acao==='remover'){delete carrinho[id];}else if(acao==='favoritar'){favoritos=favoritos.includes(id)?favoritos.filter(x=>x!==id):[...favoritos,id];}salvar();render();});
+app.addEventListener('input',e=>{if(e.target.id==='campoBusca'){const pos=e.target.selectionStart;busca=e.target.value;renderHome();const campo=document.getElementById('campoBusca');campo.focus();campo.setSelectionRange(pos,pos);}});
+app.addEventListener('submit',e=>{if(e.target.id==='formLogin'){e.preventDefault();document.getElementById('mensagemLogin').textContent='Cadastro demonstrativo. Para contas reais, configure um servidor com autenticação segura.';}});
+render();
